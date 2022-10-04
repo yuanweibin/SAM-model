@@ -1,0 +1,432 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs (libuserincompressibleSAMModels.so);
+
+application     pimpleFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         300;
+
+deltaT          2e-6;
+
+writeControl    runTime;
+
+writeInterval   1;
+
+purgeWrite      3;
+
+writeFormat     binary;
+
+writePrecision  8;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   18;
+
+runTimeModifiable false;
+
+adjustTimeStep  true;
+
+maxCo           0.6;
+
+// Allow one-third of time for initialisation before sampling
+timeStart    10.0;//#eval #{ 1.0/3.0 * ${/endTime} #};
+
+functions
+{
+    wallShearStress
+    {
+        type                wallShearStress;
+        libs                (fieldFunctionObjects);
+        patches             ( bottom top );
+        writePrecision      10;
+        writeToFile         yes;
+        log                 yes;
+        executeControl      timeStep;
+        executeInterval     1;
+        writeControl        writeTime;
+        timeStart           $/timeStart;
+    }
+
+    vorticity1
+    {
+    // Mandatory entries (unmodifiable)
+    type        vorticity;
+    libs        (fieldFunctionObjects);
+
+    // Optional (inherited) entries
+    result          vorticity;
+    region          region0;
+    enabled         true;
+    log             true;
+    timeStart       $/timeStart;
+    writeControl    writeTime;
+    }
+
+    /*Cf
+    {
+        type                coded;
+        libs                (utilityFunctionObjects);
+        name                Cf;
+        writeControl        writeTime;
+
+        codeExecute
+        #{
+            static autoPtr<volScalarField> Cf;
+            if
+            (
+                mesh().time().timeIndex() == 1
+                ||
+                mesh().time().startTimeIndex() == mesh().time().timeIndex() - 1
+            )
+            {
+                Info<< "Create skin-friction coefficient field" << nl;
+                Cf.set
+                (
+                    new volScalarField
+                    (
+                        IOobject
+                        (
+                            "Cf",
+                            mesh().time().timeName(),
+                            mesh(),
+                            IOobject::NO_READ,
+                            IOobject::AUTO_WRITE
+                        ),
+                        mesh(),
+                        dimless
+                    )
+                );
+            }
+
+            if
+            (
+                mesh().time().timeIndex() != 1
+             && mesh().time().timeIndex() > 3 // 60 // = timeStart
+            )
+            {
+                Info<< "Computing skin-friction coefficient field" << endl;
+
+                const auto& tau =
+                    mesh().lookupObject<volVectorField>("wallShearStress");
+                auto& Cf = mesh().lookupObjectRef<volScalarField>("Cf");
+
+                const dimensionedScalar Ubulk(dimVelocity, 17.55);
+
+                Cf = mag(tau.component(0))/(0.5*sqr(Ubulk));
+            }
+        #};
+    }*/
+
+    Q1
+    {
+        // Mandatory entries (unmodifiable)
+        type            Q;
+        libs            (fieldFunctionObjects);
+
+        // Optional (inherited) entries
+        region          region0;
+        enabled         true;
+        log             true;
+        timeStart       0;
+        executeControl  writeTime;
+        executeInterval -1;
+        writeControl    writeTime;
+        writeInterval   -1;
+    }
+
+    grad2
+    {
+        // Mandatory entries (unmodifiable)
+        type            grad;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory (inherited) entries (runtime modifiable)
+        field           U;
+
+        // Optional (inherited) entries
+        result          gradU;
+        region          region0;
+        enabled         true;
+        log             true;
+        timeStart       0;
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    writeTime;
+        writeInterval   -1;
+    }
+
+    fieldAverage1
+    {
+        type                fieldAverage;
+        libs                (fieldFunctionObjects);
+        timeStart           $/timeStart;
+        writeControl        writeTime;
+
+        fields
+        (
+            U
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+
+            p
+            {
+                mean        on;
+                prime2Mean  on;
+                base        time;
+            }
+
+            wallShearStress
+            {
+                mean        on;
+                prime2Mean  off;
+                base        time;
+            }
+
+            vorticity
+            {
+                mean        on;
+                prime2Mean  off;
+                base        time;
+            }
+        );
+    }
+
+    grad1
+    {
+        // Mandatory entries (unmodifiable)
+        type            grad;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory (inherited) entries (runtime modifiable)
+        field           UMean;
+
+        // Optional (inherited) entries
+        result          gradUMean;
+        region          region0;
+        enabled         true;
+        log             true;
+        timeStart       $/timeStart;
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    writeTime;
+        writeInterval   -1;
+    }
+
+    /*Eps
+    {
+        type                coded;
+        libs                (utilityFunctionObjects);
+        name                Eps;
+        writeControl        writeTime;
+
+        codeExecute
+        #{
+            static autoPtr<volScalarField> Eps;
+            if
+            (
+                mesh().time().timeIndex() == 1
+                ||
+                mesh().time().startTimeIndex() == mesh().time().timeIndex() - 1
+            )
+            {
+                Info<< "Create Eps field" << nl;
+                Eps.set
+                (
+                    new volScalarField
+                    (
+                        IOobject
+                        (
+                            "Eps",
+                            mesh().time().timeName(),
+                            mesh(),
+                            IOobject::NO_READ,
+                            IOobject::AUTO_WRITE
+                        ),
+                        mesh(),
+                        dimensionedScalar(dimensionSet(0,0,-2,0,0,0,0), 0.)
+                    )
+                );
+            }
+
+            if
+            (
+                mesh().time().timeIndex() != 1
+             && mesh().time().value() > 5
+            )
+            {
+                Info<< "Computing Eps field" << endl;
+                Info<< "Step = " << mesh().time().timeIndex() << nl;
+                Info<< "Time = " << mesh().time().value() << nl;
+
+
+                const auto& gradU =
+                    mesh().lookupObject<volTensorField>("gradU");
+                const auto& gradUMean =
+                    mesh().lookupObject<volTensorField>("gradUMean");
+
+                volTensorField s1(gradU-gradUMean);
+                volTensorField s2(s1.T());
+                volTensorField s3((s1 + s2)/2);
+
+                auto& Eps = mesh().lookupObjectRef<volScalarField>("Eps");
+
+                Eps = s3 && s3;
+            }
+        #};
+    }
+
+    ww
+    {
+        type                coded;
+        libs                (utilityFunctionObjects);
+        name                ww;
+        writeControl        writeTime;
+
+        codeExecute
+        #{
+            static autoPtr<volScalarField> ww;
+            if
+            (
+                mesh().time().timeIndex() == 1
+                ||
+                mesh().time().startTimeIndex() == mesh().time().timeIndex() - 1
+            )
+            {
+                Info<< "Create ww field" << nl;
+                ww.set
+                (
+                    new volScalarField
+                    (
+                        IOobject
+                        (
+                            "ww",
+                            mesh().time().timeName(),
+                            mesh(),
+                            IOobject::NO_READ,
+                            IOobject::AUTO_WRITE
+                        ),
+                        mesh(),
+                        dimensionedScalar(dimensionSet(0,0,-2,0,0,0,0), 0.)
+                    )
+                );
+            }
+
+            if
+            (
+                mesh().time().timeIndex() != 1
+             && mesh().time().value() > 5
+            )
+            {
+                Info<< "Computing ww field" << endl;
+
+                const auto& vorticity =
+                    mesh().lookupObject<volVectorField>("vorticity");
+                const auto& vorticityMean =
+                    mesh().lookupObject<volVectorField>("vorticityMean");
+
+                volVectorField fluc(vorticity-vorticityMean);
+
+                auto& ww = mesh().lookupObjectRef<volScalarField>("ww");
+
+                ww = fluc & fluc;
+            }
+        #};
+    }*/
+
+    fieldAverage2
+    {
+        type                fieldAverage;
+        libs                (fieldFunctionObjects);
+        timeStart           $/timeStart;
+        writeControl        writeTime;
+
+        fields
+        (
+        );
+    }
+
+    /*Co1
+    {
+        // Mandatory entries (unmodifiable)
+        type            CourantNo;
+        libs            (fieldFunctionObjects);
+
+        // Optional entries (runtime modifiable)
+        rho             rho;
+
+        // Optional (inherited) entries
+        field           phi;
+        result          CoNum;
+        region          region0;
+        enabled         true;
+        log             true;
+        timeStart       0;
+        timeEnd         1000;
+        executeControl  writeTime;
+        executeInterval -1;
+        writeControl    writeTime;
+        writeInterval   -1;
+    }
+
+    columnAverage1
+    {
+        // Mandatory entries (unmodifiable)
+        type            columnAverage;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory entries (runtime modifiable)
+        patches         ( left );
+        fields          ( UPrime2Mean UMean U EpsMean Eps );
+
+        // Optional (inherited) entries
+        region          region0;
+        enabled         true;
+        log             true;
+        timeStart       $/timeStart;
+        executeControl  writeTime;
+        writeControl    writeTime;
+    }*/
+
+    /*writeCellCentres1
+    {
+    // Mandatory entries (unmodifiable)
+    type            writeCellCentres;
+    libs            (fieldFunctionObjects);
+
+    // Optional (inherited) entries
+    region          region0;
+    enabled         true;
+    log             true;
+    timeStart       0;
+    timeEnd         1000;
+    executeControl  onEnd;
+    writeControl    onEnd;
+    }*/
+}
+
+// ************************************************************************* //

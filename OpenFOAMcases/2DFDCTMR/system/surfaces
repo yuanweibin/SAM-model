@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Version:  v2106
+    \\  /    A nd           | Website:  www.openfoam.com
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+Description
+    Writes out surface files with interpolated field data in VTK format, e.g.
+    cutting planes, iso-surfaces and patch boundary surfaces.
+
+    This file includes a selection of example surfaces, each of which the user
+    should configure and/or remove.
+
+\*---------------------------------------------------------------------------*/
+
+#includeEtc "./system/surfaces.cfg"
+
+fields
+(
+	U
+	p
+	nut
+	wallShearStress
+);
+
+surfaces
+(
+    xNormal
+    {
+        $cuttingPlane;
+    }
+
+    yNormal
+    {
+        $cuttingPlane;
+        pointAndNormalDict
+        {
+            //basePoint   (0.1 -0.95 0.5);
+			normal (0 1 0);      // Overrides default normalVector (1 0 0)
+        }                         // $y: macro for (0 1 0)
+    }
+
+    zNormal
+    {
+        $cuttingPlane;
+        pointAndNormalDict
+        {
+            //basePoint    (0 0 2); // Overrides default basePoint (0 0 0)
+            normal $z;      // $y: macro for (0 0 1)
+        }
+    }
+
+/*
+    p100
+    {
+        $isosurface;
+        isoField    p;
+        isoValue    100;
+    }
+*/
+    wall
+    {
+        $patchSurface;
+        patches     (bottom);
+    }
+);
+
+// ************************************************************************* //

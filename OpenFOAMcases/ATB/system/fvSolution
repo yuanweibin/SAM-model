@@ -1,0 +1,98 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        tolerance       1e-8;
+        relTol          0.1;
+		nCellsInCoarsestLevel   20;
+	}
+
+    yPsi
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        tolerance       1e-10;
+        relTol          0;
+		nCellsInCoarsestLevel   20;
+		maxIter			1e4;
+	}
+
+    "(U|k|omega|e|nuTilda)"
+    {
+        solver          GAMG;
+        smoother	    GaussSeidel;
+        tolerance       1e-8;
+        relTol          0.01;
+		nCellsInCoarsestLevel 20;
+    }
+
+	/*"(U|nuTilda)"
+	{
+			solver          smoothSolver;
+			smoother        symGaussSeidel;
+			tolerance       1e-09;
+			relTol          0.001;
+	}
+	
+	e
+	{
+			solver          smoothSolver;
+			smoother        symGaussSeidel;
+			tolerance       1e-09;
+			relTol          0.001;
+	}*/
+
+
+}
+
+SIMPLE
+{
+    residualControl
+    {
+        p               1e-8;
+        U               1e-8;
+        "(k|omega|e|nuTilda)"   1e-8;
+    }
+
+	transonic			yes;
+	consistent			yes;
+	nNonOrthogonalCorrectors 1;
+    pMinFactor      0.2;
+    pMaxFactor      2.5;
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p               1;
+    }
+    equations
+    {
+		p				1;
+        U               0.9;
+        e               0.9;
+        "(nuTilda|k|omega)"     0.9;
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "1/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+8
+(
+    back
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          319488;
+        startFace       637664;
+    }
+    bottom
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          1040;
+        startFace       957152;
+    }
+    center1
+    {
+        type            symmetry;
+        inGroups        1(symmetry);
+        nFaces          16;
+        startFace       958192;
+    }
+    center2
+    {
+        type            symmetry;
+        inGroups        1(symmetry);
+        nFaces          16;
+        startFace       958208;
+    }
+    front
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          319488;
+        startFace       958224;
+    }
+    inlet
+    {
+        type            patch;
+        nFaces          256;
+        startFace       1277712;
+    }
+    outlet
+    {
+        type            patch;
+        nFaces          448;
+        startFace       1277968;
+    }
+    top
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          848;
+        startFace       1278416;
+    }
+)
+
+// ************************************************************************* //

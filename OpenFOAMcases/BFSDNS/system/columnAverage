@@ -1,0 +1,12 @@
+// -*- C++ -*-
+
+type            columnAverage;
+libs            (fieldFunctionObjects);
+
+patches         ( front );
+fields          ( UPrime2Mean UMean EpsMean CfMean pMean gradUMean);
+
+executeControl  onEnd;
+writeControl    onEnd;
+
+// ************************************************************************* //

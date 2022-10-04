@@ -1,0 +1,223 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2106                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   1;
+
+Li      -40.0;
+Lx       40.0;
+H       1.0;
+H2      #eval{ 2*$H };
+Hm      #eval{ -1*$H };
+H2m     #eval{ -2*$H };
+W       #eval{ 2*pi() };
+C       6;
+
+vertices
+(
+    (    0   $H2m  $W) // 0
+    (   $C   $H2m  $W) // 1
+    (  $Lx   $H2m  $W) // 2
+    (    0   $Hm   $W) // 3
+    (   $C   $Hm   $W) // 4
+    (  $Lx   $Hm   $W) // 5
+    (  $Li   0     $W) // 6
+    (    0   0     $W) // 7
+    (   $C   0     $W) // 8
+    (  $Lx   0     $W) // 9
+    (  $Li   $H    $W) // 10
+    (    0   $H    $W) // 11
+    (   $C   $H    $W) // 12
+    (  $Lx   $H    $W) // 13
+    (  $Li   $H2   $W) // 14
+    (    0   $H2   $W) // 15
+    (   $C   $H2   $W) // 16
+    (  $Lx   $H2   $W) // 17
+
+    (    0   $H2m  0) // 18
+    (   $C   $H2m  0) // 19
+    (  $Lx   $H2m  0) // 20
+    (    0   $Hm   0) // 21
+    (   $C   $Hm   0) // 22
+    (  $Lx   $Hm   0) // 23
+    (  $Li   0     0) // 24
+    (    0   0     0) // 25
+    (   $C   0     0) // 26
+    (  $Lx   0     0) // 27
+    (  $Li   $H    0) // 28
+    (    0   $H    0) // 29
+    (   $C   $H    0) // 30
+    (  $Lx   $H    0) // 31
+    (  $Li   $H2   0) // 32
+    (    0   $H2   0) // 33
+    (   $C   $H2   0) // 34
+    (  $Lx   $H2   0) // 35
+);
+
+ySpacing1 (
+    (0.3 40 20)
+    (0.7 30 1 )
+);
+ySpacing2 (
+    (0.7 30 1   )
+    (0.3 40 0.05)
+);
+
+xSpacing1 (
+    (39 468   1)
+    (1   25 0.2)
+);
+xSpacing2 (
+    (1 25 5)
+    (5 60 1)
+);
+xSpacing3 (
+	(34 408 1)
+);
+
+blocks
+(
+    hex (18 19 22 21  0  1  4  3)
+    (85 70 1)
+    simpleGrading ($xSpacing2 $ySpacing1 1)
+
+    hex (19 20 23 22  1  2  5  4)
+    (408 70 1)
+    simpleGrading ($xSpacing3 $ySpacing1 1)
+
+    hex (21 22 26 25  3  4  8  7)
+    (85 70 1)
+    edgeGrading ($xSpacing2 $xSpacing2 $xSpacing2 $xSpacing2 $ySpacing2  1 1 $ySpacing2  1 1 1 1)
+
+    hex (22 23 27 26  4  5  9  8)
+    (408 70 1)
+    simpleGrading ($xSpacing3 1 1)
+
+    hex (24 25 29 28  6  7 11 10)
+    (493 70 1)
+    simpleGrading ($xSpacing1 $ySpacing1 1)
+
+    hex (25 26 30 29  7  8 12 11)
+    (85 70 1)
+    edgeGrading ($xSpacing2 $xSpacing2 $xSpacing2 $xSpacing2   $ySpacing1  1 1 $ySpacing1  1 1 1 1)
+
+    hex (26 27 31 30  8  9 13 12)
+    (408 70 1)
+    simpleGrading ($xSpacing3 1 1)
+
+    hex (28 29 33 32 10 11 15 14)
+    (493 70 1)
+    simpleGrading ($xSpacing1 $ySpacing2 1)
+
+    hex (29 30 34 33 11 12 16 15)
+    (85 70 1)
+    simpleGrading ($xSpacing2 $ySpacing2 1)
+
+    hex (30 31 35 34 12 13 17 16)
+    (408 70 1)
+    simpleGrading ($xSpacing3 $ySpacing2 1)
+);
+
+edges
+(
+//
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (28 24  6 10)
+            (32 28 10 14)
+        );
+    }
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (20 23  5  2)
+            (23 27  9  5)
+            (27 31 13  9)
+            (31 35 17 13)
+        );
+    }
+    upperWall
+    {
+        type wall;
+        faces
+        (
+            (33 32 14 15)
+            (34 33 15 16)
+            (35 34 16 17)
+        );
+    }
+    lowerWall
+    {
+        type wall;
+        faces
+        (
+            (24 25 7 6)
+            (25 21 3 7)
+            (21 18 0 3)
+            (18 19 1 0)
+            (19 20 2 1)
+        );
+    }
+    front
+    {
+        //type            cyclic;
+        //neighbourPatch  back;
+		type            empty;
+		faces
+        (
+            (0 1 4 3)
+            (1 2 5 4)
+            (3 4 8 7)
+            (4 5 9 8)
+            (6 7 11 10)
+            (7 8 12 11)
+            (8 9 13 12)
+            (10 11 15 14)
+            (11 12 16 15)
+            (12 13 17 16)
+        );
+    }
+    back
+    {
+        //type            cyclic;
+        //neighbourPatch  front;
+		type            empty;
+		faces
+        (
+            (19 18 21 22)
+            (20 19 22 23)
+            (22 21 25 26)
+            (23 22 26 27)
+            (25 24 28 29)
+            (26 25 29 30)
+            (27 26 30 31)
+            (29 28 32 33)
+            (30 29 33 34)
+            (31 30 34 35)
+        );
+    }
+);
+
+
+// ************************************************************************* //
