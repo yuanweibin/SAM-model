@@ -23,3 +23,7 @@ p.s. To use this code in OpemFOAM, reader should use 'wmake' to compile the code
 p.s.s. The default SA model in OpenFOAM have some difference with standard SA model (given by NASA's TMR website).
 
 3. '/OpenFOAMcases/caseName': the setup files for different cases.
+
+# Contact me
+
+If you have any problems, feel free to contact me: yxb5132@psu.edu
