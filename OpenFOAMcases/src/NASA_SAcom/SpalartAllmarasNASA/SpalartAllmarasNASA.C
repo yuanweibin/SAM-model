@@ -411,8 +411,8 @@ void SpalartAllmarasNASA<BasicTurbulenceModel>::correct()
           - fvm::laplacian(alpha*rho*DnuTildaEff(), nuTilda_)
           - Cb2_/sigmaNut_*alpha*rho*magSqr(fvc::grad(nuTilda_))
          ==
-            Cb1_*alpha()*rho()*Stilda*nuTilda_()*(1-ft2)
-          - fvm::Sp( alpha()*rho()*( Cw1_*fw(Stilda)*nuTilda_()/sqr(y_) - Cb1_*ft2*nuTilda_()/sqr(kappa_)/sqr(y_) ), nuTilda_)
+            Cb1_*alpha()*rho()*Stilda*nuTilda_()
+          - fvm::Sp( alpha()*rho()*( Cw1_*fw(Stilda)*nuTilda_()/sqr(y_) ), nuTilda_)
           + fvOptions(alpha, rho, nuTilda_)
         );
 
