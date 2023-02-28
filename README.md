@@ -11,13 +11,13 @@ There are two floders in this project.
 
 2. '/OpenFOAMcases/src/': OpenFOAM's source code of different model
 
-  *'/OpenFOAMcases/src/SAM': OpenFOAM's source code of SAM model for simpleFoam and pimpleFoam.
+  * '/OpenFOAMcases/src/SAM': OpenFOAM's source code of SAM model for simpleFoam and pimpleFoam.
 
-  *'/OpenFOAMcases/src/SAMcom': OpenFOAM's source code of SAM model for rhoSimpleFoam and rhoPimpleFoam.
+  * '/OpenFOAMcases/src/SAMcom': OpenFOAM's source code of SAM model for rhoSimpleFoam and rhoPimpleFoam.
 
-  *'/OpenFOAMcases/src/NASA_SA': OpenFOAM's source code of standard SA model for simpleFoam and pimpleFoam.
+  * '/OpenFOAMcases/src/NASA_SA': OpenFOAM's source code of standard SA model for simpleFoam and pimpleFoam.
 
-  *'/OpenFOAMcases/src/NASA_SAcom': OpenFOAM's source code of standard SA model for rhoSimpleFoam and rhoPimpleFoam.
+  * '/OpenFOAMcases/src/NASA_SAcom': OpenFOAM's source code of standard SA model for rhoSimpleFoam and rhoPimpleFoam.
 
 p.s. To use this code in OpemFOAM, reader should use 'wmake' to compile the code and include the .so file in the 'controlDict' file, i.e., adding "libs (*.so);" in this file.
 
