@@ -20,6 +20,7 @@ There are two floders in this project.
 2.4 '/OpenFOAMcases/src/NASA_SAcom': OpenFOAM's source code of standard SA model for rhoSimpleFoam and rhoPimpleFoam.
 
 p.s. To use this code in OpemFOAM, reader should use 'wmake' to compile the code and include the .so file in the 'controlDict' file, i.e., adding "libs (*.so);" in this file.
+
 p.s.s. The default SA model in OpenFOAM have some difference with standard SA model (given by NASA's TMR website).
 
 3. '/OpenFOAMcases/caseName': the setup files for different cases.
