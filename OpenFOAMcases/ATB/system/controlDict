@@ -14,8 +14,6 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-libs (libusercompressibleSAMModels.so);
-
 application     rhoSimpleFoam;
 
 startFrom       latestTime;

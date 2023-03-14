@@ -2,28 +2,19 @@
 
 Welcome!
 
-This project gives three functions, i.e., fv1, fv2 and fw, of SAM model.
-To change SA model code to SAM model code, users can replace these functions by linear iinterpolation.
+This repository provides three parts of the SAM model.
+They are
 
-There are two floders in this project.
+1. `Functions/`
+    It constains the fv1, fv2 and fw obtained by the neural network.
+    To change SA model code to SAM model code, users can replace these functions by linear iinterpolation.
 
-1. '/Functions/': It constains the fv1, fv2 and fw obtained by the NN. 
+2. `OpenFOAMsrc/`
+    It constains the OpenFOAM's source code of SAM model, i.e., `SpalartAllmarasDNS`, and standard SA model, i.e., `SpalartAllmarasNASA`, which agrees the details of SA model documented in [NASA TMR website]{https://turbmodels.larc.nasa.gov/spalart.html}.
 
-2. '/OpenFOAMcases/src/': OpenFOAM's source code of different model
-
-    * '/OpenFOAMcases/src/SAM': OpenFOAM's source code of SAM model for simpleFoam and pimpleFoam.
-
-    * '/OpenFOAMcases/src/SAMcom': OpenFOAM's source code of SAM model for rhoSimpleFoam and rhoPimpleFoam.
-
-    * '/OpenFOAMcases/src/NASA_SA': OpenFOAM's source code of standard SA model for simpleFoam and pimpleFoam.
-
-    * '/OpenFOAMcases/src/NASA_SAcom': OpenFOAM's source code of standard SA model for rhoSimpleFoam and rhoPimpleFoam.
-
-    * p.s. To use this code in OpemFOAM, reader should use 'wmake' to compile the code and include the .so file in the 'controlDict' file, i.e., adding "libs (*.so);" in this file.
-
-    * p.s.s. The default SA model in OpenFOAM have some difference with standard SA model (given by NASA's TMR website).
-
-3. '/OpenFOAMcases/caseName': the setup files for different cases.
+3. `OpenFOAMcases/`
+    It constains 12 different cases which have been tested by the SAM model.
+    We provide the setup files of OpenFOAM for these cases so that user can directly run it by OpenFAOM.
 
 # How to use
 
