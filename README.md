@@ -70,6 +70,72 @@ You can test it by typing
    ```shell
    ./Allmake
    ``` 
+   
+5. Now, you can add your own model. Here we use `SpalartAllmarasDNS` as an example.
+Copy the code prodived by this repository to `$WM_PROJECT_USER_DIR/src/TurbulenceModels/turbulenceModels/RAS`.
+When you type the command,
+   ```shell
+   ls $WM_PROJECT_USER_DIR/src/TurbulenceModels/turbulenceModels/RAS/SpalartAllmarasDNS
+   ``` 
+you shold see the below result,
+   ```shell
+   SpalartAllmarasDNS.C  SpalartAllmarasDNS.H
+   ``` 
+   
+6. Let openFOAM know that you have added a new model.
+   ```shell
+   cd $WM_PROJECT_USER_DIR/src/TurbulenceModels;
+   vi incompressible/turbulentTransportModels/turbulentTransportModels.C;
+   ``` 
+   add below two lines to RAS models part
+   ```cpp
+   #include "SpalartAllmarasDNS.H"
+   makeRASModel(SpalartAllmarasDNS);
+   ``` 
+
+The file should look this,
+   ```cpp
+   //............ 
+   #include "SpalartAllmaras.H"
+   makeRASModel(SpalartAllmaras);
+   
+   #include "SpalartAllmarasDNS.H"
+   makeRASModel(SpalartAllmarasDNS);
+   //............
+   ```
+   
+Similarly, changing the compressible sovler,
+   ```shell
+   cd $WM_PROJECT_USER_DIR/src/TurbulenceModels;
+   vi compressible/turbulentFluidThermoModels/turbulentFluidThermoModels.C;
+   ```
+   add below two lines to RAS models part
+   ```cpp
+   #include "SpalartAllmarasDNS.H"
+   makeRASModel(SpalartAllmarasDNS);
+   ```
+   
+7. Modify the `Allwmake` file by
+   ```shell
+   vi Allwmake;
+   ```
+   Add the code `wmakeLnInclude -u turbulenceModels` before `wmake $targetType turbulenceModels`.
+   So it looks like
+   ```shell
+   #............
+   wmakeLnInclude -u turbulenceModels
+   
+   wmake $targetType turbulenceModels
+   #............
+   ```
+
+8. Recompile by 
+   ```shell
+   ./Allwmake
+   ```
+   
+9. Congratulations! You can use the new model named `SpalartAllmarasDNS` in openFOAM by changing the keyword in `constant/turbulenceProperties`!
+If you want to add more models for this repository, you need to repeat the steps 5 to 8.
 
 # Contact me
 
