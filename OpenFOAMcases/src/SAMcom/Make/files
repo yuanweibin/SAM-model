@@ -1,3 +1,0 @@
-turbulentFluidThermoModelsDNS.C
-
-LIB = $(FOAM_USER_LIBBIN)/libusercompressibleSAMModels

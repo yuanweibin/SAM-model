@@ -1,3 +1,0 @@
-turbulentFluidThermoModelsNASA.C
-
-LIB = $(FOAM_USER_LIBBIN)/libusercompressibleNASASAModels
