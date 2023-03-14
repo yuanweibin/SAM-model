@@ -71,7 +71,7 @@ You can test it by typing
    ```shell
    ls $WM_PROJECT_USER_DIR/src/TurbulenceModels/turbulenceModels/RAS/SpalartAllmarasDNS
    ``` 
-   you shold see the below result,
+   you should see the below result,
    ```shell
    SpalartAllmarasDNS.C  SpalartAllmarasDNS.H
    ``` 
