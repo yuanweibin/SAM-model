@@ -32,8 +32,8 @@ Here, I will show you the whole process.
 
 1. Make sure your system can run OpenFOAM and has OpenFOAM's enviormental variables, e.g. `$FOAM_SRC`, `$WM_PROJECT_USER_DIR`, etc.
 You can test it by typing
-   
-   ```
+  
+   ```shell
    echo $WM_PROJECT_USER_DIR;
    echo $FOAM_SRC;
    ```
@@ -41,7 +41,7 @@ You can test it by typing
 
 2. Copy the existing models to `$WM_PROJECT_USER_DIR`
 
-   ```
+   ```shell
    cd $WM_PROJECT_USER_DIR;
    mkdir src;
    cd src;
@@ -49,8 +49,27 @@ You can test it by typing
    cd TurbulenceModels;
    ```
    
-3. Create you own `.lib` file by 
-   
+3. You need modify some files before creating you own `.lib` file,
+   ```shell
+   vi incompressible/Make/files;
+   ```
+   change the last line `LIB = $(FOAM_LIBBIN)/libincompressibleTurbulenceModels` to
+   ```shell
+   LIB = $(FOAM_USER_LIBBIN)/libincompressibleTurbulenceModels
+   ```
+   Similary, open another file
+   ```shell
+   vi compressible/Make/files;
+   ```
+   change the last line `LIB = $(FOAM_LIBBIN)/libcompressibleTurbulenceModels` to
+   ```shell
+   LIB = $(FOAM_USER_LIBBIN)/libcompressibleTurbulenceModels
+   ```
+
+4. compile the codes by
+   ```shell
+   ./Allmake
+   ``` 
 
 # Contact me
 
