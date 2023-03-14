@@ -1,6 +1,4 @@
-# Read me
-
-Welcome!
+# Welcome!
 
 This repository provides three parts of the SAM model.
 They are
@@ -19,7 +17,7 @@ They are
     It constains 12 different cases which have been tested by the SAM model.
     We provide the setup files of OpenFOAM for these cases so that user can directly run it by OpenFAOM.
 
-# How to use
+## How to use
 
 Before using SAM model in openFOAM, you should learn how to create a now model in OpenFOAM.
 Here, I will show you the whole process.
@@ -131,6 +129,6 @@ You can test it by typing
 9. Congratulations! You can use the new model named `SpalartAllmarasDNS` in openFOAM by changing the keyword in `constant/turbulenceProperties`!
    If you want to add more models for this repository, you need to repeat the steps 5 to 8.
 
-# Contact me
+## Contact me
 
 If you have any problems, feel free to contact me: yxb5132@psu.edu
