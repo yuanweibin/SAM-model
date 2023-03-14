@@ -33,17 +33,21 @@ Here, I will show you the whole process.
 1. Make sure your system can run OpenFOAM and has OpenFOAM's enviormental variables, e.g. $FOAM_SRC, $WM_PROJECT_USER_DIR, etc.
 You can test it by typing
    
+   `
    echo $WM_PROJECT_USER_DIR;
    echo $FOAM_SRC;
+   `
    
 
 2. Copy the existing models to $WM_PROJECT_USER_DIR
 
+   `
    cd $WM_PROJECT_USER_DIR
    mkdir src
    cd src
    cp -r $FOAM_SRC/TurbulenceModels .
    cd TurbulenceModels
+   `
    
 3. Create you own `.lib` file by 
    
