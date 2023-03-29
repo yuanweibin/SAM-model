@@ -1,37 +1,29 @@
-# Welcome!
+# SAM Model Readme
 
-This repository provides three parts of the SAM model.
-They are
+## Introduction
 
-1. `Functions`
+The SAM (Spalart-Allmaras with Machine learning) model is a modified version of the Spalart-Allmaras turbulence model that uses machine learning to improve the accuracy of flow simulations.
 
-    It constains the fv1, fv2 and fw obtained by the neural network.
-    To change SA model code to SAM model code, users can replace these functions by linear iinterpolation.
+This repository provides three parts of the SAM model:
 
-2. `OpenFOAMsrc`
+1. `Functions`: Contains the `fv1`, `fv2`, and `fw` functions obtained by the neural network. Users can replace these functions with linear interpolation to change SA model code to SAM model code.
+2. `OpenFOAMsrc`: Contains the OpenFOAM's source code of SAM model and standard SA model, which agrees with the details of the SA model documented in the [NASA TMR website](https://turbmodels.larc.nasa.gov/spalart.html).
+3. `OpenFOAMcases`: Contains 12 different cases that have been tested by the SAM model. We provide the setup files of OpenFOAM for these cases so that users can directly run them with OpenFOAM.
 
-    It constains the OpenFOAM's source code of SAM model, i.e., `SpalartAllmarasDNS`, and standard SA model, i.e., `SpalartAllmarasNASA`, which agrees the details of SA model documented in [NASA TMR website](https://turbmodels.larc.nasa.gov/spalart.html).
+## Usage
 
-3. `OpenFOAMcases`
+### Prerequisites
 
-    It constains 12 different cases which have been tested by the SAM model.
-    We provide the setup files of OpenFOAM for these cases so that user can directly run it by OpenFAOM.
+Before using the SAM model in OpenFOAM, make sure your system can run OpenFOAM and has OpenFOAM's environmental variables, such as `$FOAM_SRC` and `$WM_PROJECT_USER_DIR`. You can test this by typing:
 
-## How to use
+```shell
+echo $WM_PROJECT_USER_DIR;
+echo $FOAM_SRC;
+```
 
-Before using SAM model in openFOAM, you should learn how to create a now model in OpenFOAM.
-Here, I will show you the whole process.
+### Adding the SAM Model to OpenFOAM
 
-1. Make sure your system can run OpenFOAM and has OpenFOAM's enviormental variables, e.g. `$FOAM_SRC`, `$WM_PROJECT_USER_DIR`, etc.
-You can test it by typing
-  
-   ```shell
-   echo $WM_PROJECT_USER_DIR;
-   echo $FOAM_SRC;
-   ```
-   
-
-2. Copy the existing models to `$WM_PROJECT_USER_DIR`
+1. Copy the existing models to `$WM_PROJECT_USER_DIR`
 
    ```shell
    cd $WM_PROJECT_USER_DIR;
@@ -41,94 +33,58 @@ You can test it by typing
    cd TurbulenceModels;
    ```
    
-3. You need modify some files before creating you own `.lib` file,
+2. Modify some files before creating your own `.lib` file. Run the following commands to change the last line of the `Make/files` file in the `incompressible` and `compressible` folders:
    ```shell
    vi incompressible/Make/files;
-   ```
-   change the last line `LIB = $(FOAM_LIBBIN)/libincompressibleTurbulenceModels` to
-   ```shell
    LIB = $(FOAM_USER_LIBBIN)/libincompressibleTurbulenceModels
-   ```
-   Similary, open another file
-   ```shell
+
    vi compressible/Make/files;
-   ```
-   change the last line `LIB = $(FOAM_LIBBIN)/libcompressibleTurbulenceModels` to
-   ```shell
    LIB = $(FOAM_USER_LIBBIN)/libcompressibleTurbulenceModels
    ```
 
-4. compile the codes by
+3. Compile the codes by typing:
    ```shell
    ./Allmake
    ``` 
    
-5. Now, you can add your own model. Here we use `SpalartAllmarasDNS` as an example.
-   Copy the code prodived by this repository to `$WM_PROJECT_USER_DIR/src/TurbulenceModels/turbulenceModels/RAS`.
-   When you type the command,
+4. Add your own model. For example, to add the SpalartAllmarasDNS model, copy the code provided by this repository to `$WM_PROJECT_USER_DIR/src/TurbulenceModels/turbulenceModels/RAS`. Type the following command to check that the code has been copied correctly:
    ```shell
    ls $WM_PROJECT_USER_DIR/src/TurbulenceModels/turbulenceModels/RAS/SpalartAllmarasDNS
    ``` 
-   you should see the below result,
-   ```shell
-   SpalartAllmarasDNS.C  SpalartAllmarasDNS.H
-   ``` 
    
-6. Let openFOAM know that you have added a new model.
-   ```shell
-   cd $WM_PROJECT_USER_DIR/src/TurbulenceModels;
-   vi incompressible/turbulentTransportModels/turbulentTransportModels.C;
-   ``` 
-   add below two lines to RAS models part
+5. Let OpenFOAM know that you have added a new model by modifying the `incompressible/turbulentTransportModels/turbulentTransportModels.C` and `compressible/turbulentFluidThermoModels/turbulentFluidThermoModels.C` files. Add the following lines to the RAS models section of the turbulentTransportModels.C file:
    ```cpp
    #include "SpalartAllmarasDNS.H"
    makeRASModel(SpalartAllmarasDNS);
    ``` 
-
-   The file should look this,
-   ```cpp
-   //............ 
-   #include "SpalartAllmaras.H"
-   makeRASModel(SpalartAllmaras);
-   
-   #include "SpalartAllmarasDNS.H"
-   makeRASModel(SpalartAllmarasDNS);
-   //............
-   ```
-   
-   Similarly, changing the compressible sovler,
-   ```shell
-   cd $WM_PROJECT_USER_DIR/src/TurbulenceModels;
-   vi compressible/turbulentFluidThermoModels/turbulentFluidThermoModels.C;
-   ```
-   add below two lines to RAS models part
+   Add the following lines to the RAS models section of the `turbulentFluidThermoModels.C` file:
    ```cpp
    #include "SpalartAllmarasDNS.H"
    makeRASModel(SpalartAllmarasDNS);
-   ```
+   ``` 
    
-7. Modify the `Allwmake` file by
+6. Modify the `Allwmake` file by
    ```shell
    vi Allwmake;
    ```
    Add the code `wmakeLnInclude -u turbulenceModels` before `wmake $targetType turbulenceModels`.
-   So it looks like
+   So it looks like:
    ```shell
-   #............
+   #...
    wmakeLnInclude -u turbulenceModels
    
    wmake $targetType turbulenceModels
-   #............
+   #...
    ```
 
-8. Recompile by 
+8. Recompile by running: 
    ```shell
    ./Allwmake
    ```
    
-9. Congratulations! You can use the new model named `SpalartAllmarasDNS` in openFOAM by changing the keyword in `constant/turbulenceProperties`!
-   If you want to add more models for this repository, you need to repeat the steps 5 to 8.
+9. Congratulations! You can now use the new model named SpalartAllmarasDNS in OpenFOAM by changing the keyword in constant/turbulenceProperties! If you want to add more models from this repository, you need to repeat steps 5 to 8.
 
-## Contact me
+## Conclusion
+In summary, this repository provides the SAM model, which is an extension of the standard SA model. It includes the necessary functions and OpenFOAM source code for users to easily incorporate the SAM model into their simulations. Additionally, we provide 12 OpenFOAM cases that have been tested with the SAM model, along with setup files for users to run these cases directly.
 
-If you have any problems, feel free to contact me: yxb5132@psu.edu
+We hope that this repository is helpful for researchers and engineers who are interested in turbulence modeling and simulation. If you have any questions or encounter any issues while using the SAM model, please feel free to contact us at yxb5132@psu.edu. Thank you for your interest in our work!
