@@ -82,7 +82,7 @@ echo $FOAM_SRC;
    ./Allwmake
    ```
    
-9. Congratulations! You can now use the new model named SpalartAllmarasDNS in OpenFOAM by changing the keyword in constant/turbulenceProperties! If you want to add more models from this repository, you need to repeat steps 5 to 8.
+9. Congratulations! You can now use the new model named `SpalartAllmarasDNS` in OpenFOAM by changing the keyword in `constant/turbulenceProperties`! If you want to add more models from this repository, you need to repeat steps 5 to 8.
 
 ## Conclusion
 In summary, this repository provides the SAM model, which is an extension of the standard SA model. It includes the necessary functions and OpenFOAM source code for users to easily incorporate the SAM model into their simulations. Additionally, we provide 12 OpenFOAM cases that have been tested with the SAM model, along with setup files for users to run these cases directly.
