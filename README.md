@@ -7,7 +7,7 @@ The SAM (Spalart-Allmaras with Machine learning) model is a modified version of 
 This repository provides three parts of the SAM model:
 
 1. `Functions`: Contains the `fv1`, `fv2`, and `fw` functions obtained by the neural network. Users can replace these functions with linear interpolation to change SA model code to SAM model code.
-2. `OpenFOAMsrc`: Contains the OpenFOAM's source code of SAM model and standard SA model, which agrees with the details of the SA model documented in the [NASA TMR website](https://turbmodels.larc.nasa.gov/spalart.html).
+2. `OpenFOAMsrc`: Contains the OpenFOAM's source code of SAM model (`SplartAllmarasDNS`) and standard SA model (`SplartAllmarasNASA`), which agrees with the details of the SA model documented in the [NASA TMR website](https://turbmodels.larc.nasa.gov/spalart.html).
 3. `OpenFOAMcases`: Contains 12 different cases that have been tested by the SAM model. We provide the setup files of OpenFOAM for these cases so that users can directly run them with OpenFOAM.
 
 ## Usage
