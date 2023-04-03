@@ -37,9 +37,12 @@ echo $FOAM_SRC;
    ```shell
    vi incompressible/Make/files;
    LIB = $(FOAM_USER_LIBBIN)/libincompressibleTurbulenceModels
+   
+   vi incompressible/Make/files;
+   LIB = $(FOAM_USER_LIBBIN)/libincompressibleTurbulenceModels
 
-   vi compressible/Make/files;
-   LIB = $(FOAM_USER_LIBBIN)/libcompressibleTurbulenceModels
+   vi turbulenceModels/Make/files;
+   LIB = $(FOAM_USER_LIBBIN)/libturbulenceModels
    ```
 
 3. Compile the codes by typing:
