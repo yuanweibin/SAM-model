@@ -44,7 +44,7 @@ echo $FOAM_SRC;
 
 3. Compile the codes by typing:
    ```shell
-   ./Allmake
+   ./Allwmake
    ``` 
    
 4. Add your own model. For example, to add the SpalartAllmarasDNS model, copy the code provided by this repository to `$WM_PROJECT_USER_DIR/src/TurbulenceModels/turbulenceModels/RAS`. Type the following command to check that the code has been copied correctly:
