@@ -38,8 +38,8 @@ echo $FOAM_SRC;
    vi incompressible/Make/files;
    LIB = $(FOAM_USER_LIBBIN)/libincompressibleTurbulenceModels
    
-   vi incompressible/Make/files;
-   LIB = $(FOAM_USER_LIBBIN)/libincompressibleTurbulenceModels
+   vi compressible/Make/files;
+   LIB = $(FOAM_USER_LIBBIN)/libcompressibleTurbulenceModels
 
    vi turbulenceModels/Make/files;
    LIB = $(FOAM_USER_LIBBIN)/libturbulenceModels
