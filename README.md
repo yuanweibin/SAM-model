@@ -26,22 +26,22 @@ echo $FOAM_SRC;
 1. Copy the existing models to `$WM_PROJECT_USER_DIR`
 
    ```shell
-   cd $WM_PROJECT_USER_DIR;
-   mkdir src;
-   cd src;
-   cp -r $FOAM_SRC/TurbulenceModels .;
-   cd TurbulenceModels;
+   cd $WM_PROJECT_USER_DIR
+   mkdir src
+   cd src
+   cp -r $FOAM_SRC/TurbulenceModels .
+   cd TurbulenceModels
    ```
    
 2. Modify some files before creating your own `.lib` file. Run the following commands to change the last line of the `Make/files` file in the `incompressible` and `compressible` folders:
    ```shell
-   vi incompressible/Make/files;
+   vi incompressible/Make/files
    LIB = $(FOAM_USER_LIBBIN)/libincompressibleTurbulenceModels
    
-   vi compressible/Make/files;
+   vi compressible/Make/files
    LIB = $(FOAM_USER_LIBBIN)/libcompressibleTurbulenceModels
 
-   vi turbulenceModels/Make/files;
+   vi turbulenceModels/Make/files
    LIB = $(FOAM_USER_LIBBIN)/libturbulenceModels
    ```
 
@@ -68,7 +68,7 @@ echo $FOAM_SRC;
    
 6. Modify the `Allwmake` file by
    ```shell
-   vi Allwmake;
+   vi Allwmake
    ```
    Add the code `wmakeLnInclude -u turbulenceModels` before `wmake $targetType turbulenceModels`.
    So it looks like:
