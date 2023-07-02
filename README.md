@@ -1,4 +1,4 @@
-# SAM Model Readme
+# Details and Cases of SAMModel
 
 ## Introduction
 
