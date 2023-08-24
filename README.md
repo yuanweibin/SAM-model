@@ -3,7 +3,7 @@
 ## Introduction
 
 The SAM (Spalart-Allmaras with Machine learning) model is a modified version of the Spalart-Allmaras turbulence model that uses machine learning to improve the accuracy of flow simulations.
-The details about the SAM model are available in our publication: [Bin et al., AIAA, 2023]{https://doi.org/10.2514/1.J062870}.
+The details about the SAM model are available in our publication: [Bin et al., AIAA, 2023](https://doi.org/10.2514/1.J062870).
 
 This repository provides three parts of the SAM model:
 
