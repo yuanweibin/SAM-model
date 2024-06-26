@@ -91,4 +91,4 @@ echo $FOAM_SRC;
 ## Conclusion
 In summary, this repository provides the SAM model, which is an extension of the standard SA model. It includes the necessary functions and OpenFOAM source code for users to easily incorporate the SAM model into their simulations. Additionally, we provide 12 OpenFOAM cases that have been tested with the SAM model, along with setup files for users to run these cases directly.
 
-We hope that this repository is helpful for researchers and engineers who are interested in turbulence modeling and simulation. If you have any questions or encounter any issues while using the SAM model, please feel free to contact us at yxb5132@psu.edu. Thank you for your interest in our work!
+We hope that this repository is helpful for researchers and engineers who are interested in turbulence modeling and simulation. If you have any questions or encounter any issues while using the SAM model, please feel free to contact us at beanyuanwei@gmail.com. Thank you for your interest in our work!
